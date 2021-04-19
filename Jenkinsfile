@@ -1,6 +1,10 @@
 pipeline {
     agent any
-
+    tools {
+        maven 'mvn-3.61'
+        jdk 'Open JDK'
+        nodejs 'nodejs-12'
+    }
     stages {
         stage('Git Pull') {
             steps {
@@ -16,12 +20,23 @@ pipeline {
             steps {
                 dependencyCheckPublisher pattern: 'dependency-check-report.xml'
             }
-        }        
-        stage('Build') {
+        }
+        stage('Build'){
             steps {
-                echo 'Done'
+                sh 'mvn clean install -pl -docker -T 1.5C -DskipTests -Dmaven.test.skip -Dmaven.javadoc.skip=true -Dmaven.test.failure.ignore=true' 
             }
-        }        
+        }
+        stage('Sonarqube'){
+            steps{
+                withSonarQubeEnv('default') {
+                     sh "${tool("sonar-tool")}/bin/sonar-scanner \
+                     -Dsonar.projectKey=webgoat-proj \
+                     -Dsonar.sources=.\
+                     -Dsonar.java.binaries=./webgoat-server/target/ \
+                     "
+                }
+            }
+        }       
     }
 }
 
