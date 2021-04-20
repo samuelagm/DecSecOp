@@ -32,8 +32,7 @@ pipeline {
                      sh "${tool("sonar-tool")}/bin/sonar-scanner \
                      -Dsonar.projectKey=webgoat-proj \
                      -Dsonar.sources=.\
-                     -Dsonar.java.binaries=./webgoat-server/target/ \
-                     "
+                     -Dsonar.exclusions=**/*.java"
                 }
             }
         }       
