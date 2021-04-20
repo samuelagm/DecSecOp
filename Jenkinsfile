@@ -21,11 +21,6 @@ pipeline {
                 dependencyCheckPublisher pattern: 'dependency-check-report.xml'
             }
         }
-        stage('Build'){
-            steps {
-                sh 'mvn clean install -pl -docker -T 1.5C -DskipTests -Dmaven.test.skip -Dmaven.javadoc.skip=true -Dmaven.test.failure.ignore=true' 
-            }
-        }
         stage('Sonarqube'){
             steps{
                 withSonarQubeEnv('default') {
@@ -35,7 +30,12 @@ pipeline {
                      -Dsonar.exclusions=**/*.java"
                 }
             }
-        }       
+        }
+	stage('Build'){
+	    steps{
+		echo 'Done'
+	    }
+	}       
     }
 }
 
