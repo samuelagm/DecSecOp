@@ -24,10 +24,7 @@ pipeline {
         stage('Sonarqube'){
             steps{
                 withSonarQubeEnv('default') {
-                     sh "${tool("sonar-tool")}/bin/sonar-scanner \
-                     -Dsonar.projectKey=webgoat-proj \
-                     -Dsonar.sources=.\
-                     -Dsonar.exclusions=**/*.java"
+                     sh "${tool("sonar-tool")}/bin/sonar-scanner -Dsonar.projectKey=webgoat-proj -Dsonar.sources=. -Dsonar.exclusions=**/*.java"
                 }
             }
         }
